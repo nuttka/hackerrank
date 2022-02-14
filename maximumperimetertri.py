@@ -14,12 +14,12 @@ import sys
 #
 
 def maximumPerimeterTriangle(sticks):
-    arr = sticks.sort(reverse=True)
+    sticks.sort(reverse=True)
 
-    for i in range(len(arr)-2):
-        if (arr[i] < arr[i+1] + arr[i+2]):
-            return (arr[i+2], arr[i+1], arr[i])
-    return -1
+    for i in range(len(sticks)-2):
+        if (sticks[i] < sticks[i+1] + sticks[i+2]):
+            return (sticks[i+2], sticks[i+1], sticks[i])
+    return [-1]
 
 
 
