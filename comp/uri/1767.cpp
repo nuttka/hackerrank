@@ -13,32 +13,23 @@ int pac;
 
 int dp[MAX][MAX];
 
-pair<int, int> solve() {
-    int qtdPacs = 0;
-    int peso = 0;
-    int pesoMaxAux = 50;
+int ks(int w, int ia) {
+    if (ia > 50) 
+        return 0;
 
-    for (int i=1; i<=pac; i++) {
-        for (int j=1; j<=50; j++) {
-            if(pesos[i-1] >= j) {
-                dp[i][j] = dp[i-1][j];
-            } else {
-                dp[i][j] = max(dp[i-1][j - pesos[i-1]] + qtds[i-1], dp[i-1][j]);
-            }
-        }
+    if (dp[ia][w] != -1)
+        return dp[ia][w];
+
+
+    if (pesos[ia] > w) {
+        dp[ia][w] = ks(w, ia+1);
+        return dp[ia][w];
+    } else {
+        dp[ia][w] = max(qtds[ia] + ks(w - pesos[ia], ia+1), ks(w, ia+1));
+        return dp[ia][w];
     }
 
-    for (int i=pac; i>0; i--) {
-        if (dp[i][pesoMaxAux] != dp[i-1][pesoMaxAux]) {
-            qtdPacs++;
-            peso += pesos[i];
-            if (pesoMaxAux-pesos[i] >= 0) {
-                pesoMaxAux -= pesos[i];
-            }
-        }
-    }
 
-    return make_pair(peso, qtdPacs);
 }
 
 
@@ -51,18 +42,18 @@ int main() {
     while (n--) {
         memset(qtds, 0, sizeof(qtds));
         memset(pesos, 0, sizeof(pesos));
-        memset(dp, 0, sizeof(dp));
+        memset(dp, -1, sizeof(dp));
         cin >> pac;
 
         for (int i=0; i<pac; i++) {
             cin >> qtds[i] >> pesos[i];
         }
 
-        pair<int,int> result = solve();
+        // pair<int,int> result = ks(50, 0);
 
-        cout << dp[pac][50] << " brinquedos" << endl;
-        cout << "Peso: " << result.first << " kg" << endl;
-        cout << "sobra(m) " << pac-result.second << " pacote(s)" << endl;
+        // cout << dp[pac][50] << " brinquedos" << endl;
+        // cout << "Peso: " << result.first << " kg" << endl;
+        // cout << "sobra(m) " << pac-result.second << " pacote(s)" << endl;
 
     }
 

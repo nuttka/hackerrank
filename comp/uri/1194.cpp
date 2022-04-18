@@ -8,41 +8,29 @@
 using namespace std;
 
 
-typedef struct node {
-    char value;
-    struct node* l;
-    struct node* r;
-} node;
 
-
-
-
-map <char, int> m;
 int nn;
 string prefix, infix;
-node* nodeo;
 
-void add(node* nodeo, char value) {
-    if (!nodeo) {
-        nodeo = new node();
-        nodeo->l = NULL;
-        nodeo->r = NULL;
-        nodeo->value = value;
-    } else {
-        if (m[nodeo->value] < m[value]) {
-            add(nodeo->r, value);
-        } else {
-            add(nodeo->l, value);
-        }
+void printPos(string pre, string in) {
+    char root = pre[0];
+    pre.erase(0, 1;
+
+    string e = in.find(root) == 0 ? "" : in.substr(0, in.find(root));
+    string d = (in.find(root) == in.length() - 1) ? "" : in.substr(in.find(root) + 1);
+
+
+    if (e != "") {
+        string ppre = pre.substr(0, e.length());
+        printPos(ppre, e);
     }
-}
 
-void printPos(node* nodeo) {
-    if(!nodeo) return;
-
-    printPos(nodeo->l);
-    printPos(nodeo->r);
-    cout << nodeo->value;
+    if (d != "") {
+        string ppre = pre.substr(e.length());
+        printPos(ppre, d);
+    }
+    
+    cout << root;
 }
 
 int main() {
@@ -54,16 +42,12 @@ int main() {
         cin >> nn;
         cin >> prefix;
         cin >> infix;
-        
-        for (int i=0; i<nn; i++) {
-            m[infix[i]] = i;
-        }
-        for (int i=0; i<nn; i++) {
-            add(nodeo, prefix[i]);
-        }
 
-        printPos(nodeo);
+        printPos(prefix, infix);
+        
+        cout << endl;
     }
+
 
 
     return 0;
