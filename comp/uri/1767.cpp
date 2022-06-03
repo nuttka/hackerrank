@@ -67,7 +67,7 @@ int main() {
 
         cout << result << " brinquedos" << endl;
         cout << "Peso: " << result2.first << " kg" << endl;
-        cout << "sobra(m) " << result2.second << " pacote(s)" << endl << endl;
+        cout << "sobra(m) " << result2.second << " pacote(s)" << endl;
 
     }
 
