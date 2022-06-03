@@ -8,91 +8,66 @@
 using namespace std;
 
 
-int n, m, k, p[MAX][MAX], na, a[2345], start, fim;
-long double prob;
-int visited[MAX], val[MAX], minn;
-
-
-
-int djk() {
-    for (int i=1; i<n; i++) {
-        int next, min = INF;
-        for (int j=1; j<=n; j++) {
-            if (visited[j] == 0 && val[j] < min) {
-                min = val[j];
-                next = j;
-            }
-            visited[next] = 1;
-        }
-        for (int j=1; j<=n; j++) {
-            if (visited[j] == 0 && p[next][j] != 0 && (val[next] + a[j] < val[j])) {
-                val[j] = val[next] + a[j];
-            }
-        }
-    }
-
-    return val[fim];
-}   
-
-// int djk() {
-//     vector<int> val(MAX, INF);
-//     val[start] = a[start];
-//     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> q;
-
-//     q.push({val[start], start});
-
-//     while(!q.empty()) {
-//         int tt = q.top().second;
-//         q.pop();
-
-//         for (int i=0; i<n; i++) {
-//             if (p[tt][i] == 1 && val[tt] + a[i] < val[i]) {
-//                 val[i] = val[tt] + a[i];
-//                 q.push({val[i], i});
-//             }
-//         }
-//     }
-//     return val[fim];
-// }
-
-
-long double calc() {
-    if (minn>k) return 0.000;
-    return pow(prob, minn);
-}
-
 
 
 int main() {
     _;
+    int n;
+    
+    while (cin >> n) {
+        int m, k, na;
+        double prob;
+        
+        cin >> m >> k >> prob;
 
-    while (cin >> n >> m >> k >> prob) {
-        // cin >> n >> m >> k >> prob;
-        memset(p, 0, sizeof(p));
-        memset(a, 0, sizeof(a));
-        memset(visited, 0, sizeof(visited));
-        memset(val, INF, sizeof(val));
+        vector<int> p[n+1];
+        vector<int> at(n+1, 0);
+        vector<int> val(n+1, INF);
+        vector<int> visited(n+1, 0);
+
         for (int i=0; i<m; i++) {
-            int a, b;
-            cin >> a >> b;
-            p[a][b] = 1;
-            p[b][a] = 1;
+            int aaa, bbb;
+            cin >> aaa >> bbb;
+            p[aaa].push_back(bbb);
+            p[bbb].push_back(aaa);
         }
         cin >> na;
+
         for (int i=0; i<na; i++) {
-            int aa;
-            cin >> aa;
-            a[aa]++;
+            int aaa;
+            cin >> aaa;
+            at[aaa]++;
         }
-        cin >> start >> fim;
 
-        val[start] = a[start];
-        minn = djk();
-        long double pf = calc();
+        int start, end;
+        cin >> start >> end;
 
-        cout << fixed;
-        cout << setprecision(3);
-        cout << pf << endl;
+        val[start] = at[start];
+
+        for (int i=0; i<n; i++){
+            int next = -1;
+            for (int j=1; j<=n; j++) {
+                if (visited[j] == 0 && (next == -1 || val[j] < val[next])) 
+                    next = j;
+            }
+
+            visited[next] = 1;
+
+            for (int u : p[next]) {
+                if (val[u] > val[next] + at[u]) 
+                    val[u] = val[next] + at[u];
+            }
+        }
+
+        int minn = val[end];
+
+        double pf;
+
+        if (k<minn) pf = 0.0;
+        else pf = pow(prob, minn);
+
+        cout << fixed << setprecision(3) << pf << endl;
+
     }
 
     return 0;
