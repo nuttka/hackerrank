@@ -1,5 +1,9 @@
 #!/bin/python3
+<<<<<<< HEAD
 # ......
+=======
+# ...
+>>>>>>> 1875308c73906c6da370aa682c859ce589b8f71e
 import math
 import os
 import random
